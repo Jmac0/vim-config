@@ -191,13 +191,21 @@ let mapleader = ","
 set colorcolumn=80
 set nowrap
 set smartindent
+set number                     " Show current line number
+set relativenumber             " Show relative line numbers
 highlight ColorColumn ctermbg=0 guibg=darkblue
+:let g:NERDTreeWinSize=25
+
 
 set spell
 
 "/////// Clear search highlighting//////
 :let @/ = ""
 
+
+
+
+let g:ale_disable_lsp = 1
 call plug#begin('~/.vim/plugged')
 " Using Vim-Plug
 Plug 'skammer/vim-css-color'
@@ -205,19 +213,21 @@ Plug 'tpope/vim-fugitive'
 Plug 'preservim/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
-"Plug 'jaxbot/semantic-highlight.vim'
+Plug 'jaxbot/semantic-highlight.vim'
 Plug 'navarasu/onedark.nvim'
 "Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
-Plug 'codota/tabnine-vim'
+:"Plug 'codota/tabnine-vim'
+Plug 'mattn/emmet-vim'
+Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'eslint/eslint'
 call plug#end()
-let g:coc_global_extensions = ['coc-tslint-plugin',  'coc-tabnine', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
+let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-styled-components', 'coc-tabnine', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
 " Start autocompletion after 4 chars
 command! -nargs=0 Gp :CocCommand prettier.formatFile
-
 
 let g:ale_linters = {
 \   'javascript': ['eslint'],
@@ -229,14 +239,22 @@ let g:ale_fixers = {
 \}
 
 let g:ale_fix_on_save = 1
-
+"highlight ALEErrorSign ctermbg=NONE ctermfg=red
+"highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
 let g:ale_completion_enabled = 1
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '⚠'
+
+
+"/// Cltrl + e to jump to next error
+nmap <silent> <C-e> <Plug>(ale_next_wrap)
+"///// Close NERDTree on tab close
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
+      \ && b:NERDTree.isTabTree()) | q | endif
 
 
 
-
-
-"I don't think this is very goo
+"I don't think this is very good!
 let s:semanticGUIColors = [ '#72d572', '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80', '#ffab91', '#bcaaa4', '#b0bec5', '#ffa726', '#ff8a65', '#f9bdbb', '#f9bdbb', '#f8bbd0', '#e1bee7', '#d1c4e9', '#ffe0b2', '#c5cae9', '#d0d9ff', '#b3e5fc', '#b2ebf2', '#b2dfdb', '#a3e9a4', '#dcedc8' , '#f0f4c3', '#ffb74d' ]
 
 
@@ -249,6 +267,13 @@ let g:semanticBlacklistOverride = {
     \ ]
 \ }
 
+"////////// Ultisnips //////////
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsEditSplit="vertical"
+
+
 "////////// My Custom Mapings /////////////////
 
 inoremap $  ${}<Left>
@@ -260,8 +285,7 @@ inoremap lll console.log()<Left>
 inoremap => () =>
 inoremap /* /* */
 
-"save file
-"noremap <Leader>s :w<CR>
+"/// Save file shortcuts
 inoremap <C-w> <Esc>:w<CR>i
 noremap <C-w>  :w<CR>
 "//////////////// Split window Nav //////////
@@ -273,11 +297,11 @@ noremap <C-l> <C-w>l
 
 
 " move lines up and down with n & m
-noremap n :m-2<CR>
-noremap m :m+1<CR>
+noremap m :m-2<CR>
+noremap n :m+1<CR>
 
-vnoremap <C-j>   :m '<-2<CR>gv=gv
-vnoremap <C-k> :m '>+1<CR>gv=gv
+vnoremap <C-k>   :m '<-2<CR>gv=gv
+vnoremap <C-j> :m '>+1<CR>gv=gv
 
 
 "///////// Open NerdTree with command t

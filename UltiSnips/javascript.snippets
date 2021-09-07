@@ -1,0 +1,31 @@
+
+snippet funex "create function expression" b
+const ${1: functionName} = () => {
+
+
+
+
+$3
+}
+
+endsnippet
+
+
+snippet rsf "React statless function" b
+import React from 'react';
+
+const ${1: componentName} = (props) => {
+
+  return (
+
+   <div>
+$2
+
+   </div>
+
+  );
+
+ }
+
+export default $1;
+endsnippet
