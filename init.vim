@@ -224,6 +224,8 @@ Plug 'mattn/emmet-vim'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'eslint/eslint'
+Plug 'alvan/vim-closetag'
+
 call plug#end()
 let g:coc_global_extensions = ['coc-tslint-plugin', 'coc-styled-components', 'coc-tabnine', 'coc-tsserver', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier']
 " Start autocompletion after 4 chars
@@ -284,7 +286,8 @@ inoremap ' ''<Left>
 inoremap lll console.log()<Left>
 inoremap => () =>
 inoremap /* /* */
-
+map <S-Right> :tabn<CR>
+map <S-Left>  :tabp<CR>
 "/// Save file shortcuts
 inoremap <C-w> <Esc>:w<CR>i
 noremap <C-w>  :w<CR>
@@ -297,8 +300,8 @@ noremap <C-l> <C-w>l
 
 
 " move lines up and down with n & m
-noremap m :m-2<CR>
-noremap n :m+1<CR>
+"noremap m :m-2<CR>
+"noremap n :m+1<CR>
 
 vnoremap <C-k>   :m '<-2<CR>gv=gv
 vnoremap <C-j> :m '>+1<CR>gv=gv
@@ -328,3 +331,51 @@ let g:onedark_style = 'darker'
 colorscheme onedark
 syntax match jsNumber /\<-\=\d\+\(L\|[eE][+-]\=\d\+\)\=\>\|\<0[xX]\x\+\>/
 hi jsNumber guifg=#c500ff guibg=NONE gui=NONE
+" highlight current line
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine guibg=#2C147F ctermbg=234
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
